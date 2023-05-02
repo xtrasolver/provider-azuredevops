@@ -1,0 +1,25 @@
+apiVersion: variable.azuredevops.upbound.io/v1alpha1
+kind: Group
+metadata:
+  annotations:
+    meta.upbound.io/example-id: variable/v1alpha1/group
+    crossplane.io/external-name: "9"
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  deletionPolicy: Orphan
+  forProvider:
+    allowAccess: true
+    description: Example Variable Group Description
+    name: Example Variable Group
+    projectId: 489dc5dc-3925-4708-bc5a-2905499d4f02
+    variable:
+    - name: key1
+      value: val1
+    - isSecret: true
+      name: key2
+      secretValueSecretRef:
+        key: example-key
+        name: example-secret
+        namespace: upbound-system

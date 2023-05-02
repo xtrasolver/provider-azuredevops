@@ -1,0 +1,15 @@
+apiVersion: azuredevops.azuredevops.upbound.io/v1alpha1
+kind: Environment
+metadata:
+  annotations:
+    meta.upbound.io/example-id: azuredevops/v1alpha1/environment
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    name: Example Environment
+    projectId: ${azuredevops_project.example.id}
+
+---
+

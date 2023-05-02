@@ -2,7 +2,7 @@
 # Setup Project
 
 PROJECT_NAME ?= provider-azuredevops
-PROJECT_REPO ?= github.com/upbound/$(PROJECT_NAME)
+PROJECT_REPO ?= github.com/xtrasolver/$(PROJECT_NAME)
 
 export TERRAFORM_VERSION ?= 1.4.6
 

@@ -5,18 +5,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.3
   creationTimestamp: null
-  name: resources.null.azuredevops.upbound.io
+  name: environments.azuredevops.azuredevops.upbound.io
 spec:
-  group: null.azuredevops.upbound.io
+  group: azuredevops.azuredevops.upbound.io
   names:
     categories:
     - crossplane
     - managed
     - azuredevops
-    kind: Resource
-    listKind: ResourceList
-    plural: resources
-    singular: resource
+    kind: Environment
+    listKind: EnvironmentList
+    plural: environments
+    singular: environment
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,7 +35,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Resource is the Schema for the Resources API. <no value>
+        description: Environment is the Schema for the Environments API. Manages an
+          Environment.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -50,7 +51,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: ResourceSpec defines the desired state of Resource
+            description: EnvironmentSpec defines the desired state of Environment
             properties:
               deletionPolicy:
                 default: Delete
@@ -67,13 +68,16 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  triggers:
-                    additionalProperties:
-                      type: string
-                    description: A map of arbitrary strings that, when changed, will
-                      force the null resource to be replaced, re-running any associated
-                      provisioners.
-                    type: object
+                  description:
+                    description: A description for the Environment.
+                    type: string
+                  name:
+                    description: The name which should be used for this Environment.
+                    type: string
+                  projectId:
+                    description: The ID of the project. Changing this forces a new
+                      Environment to be created.
+                    type: string
                 type: object
               managementPolicy:
                 default: FullControl
@@ -261,20 +265,29 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: name is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)
+            - message: projectId is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.projectId)
           status:
-            description: ResourceStatus defines the observed state of Resource.
+            description: EnvironmentStatus defines the observed state of Environment.
             properties:
               atProvider:
                 properties:
-                  id:
+                  description:
+                    description: A description for the Environment.
                     type: string
-                  triggers:
-                    additionalProperties:
-                      type: string
-                    description: A map of arbitrary strings that, when changed, will
-                      force the null resource to be replaced, re-running any associated
-                      provisioners.
-                    type: object
+                  id:
+                    description: The ID of the Environment.
+                    type: string
+                  name:
+                    description: The name which should be used for this Environment.
+                    type: string
+                  projectId:
+                    description: The ID of the project. Changing this forces a new
+                      Environment to be created.
+                    type: string
                 type: object
               conditions:
                 description: Conditions of the resource.

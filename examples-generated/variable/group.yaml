@@ -1,0 +1,26 @@
+apiVersion: variable.azuredevops.upbound.io/v1alpha1
+kind: Group
+metadata:
+  annotations:
+    meta.upbound.io/example-id: variable/v1alpha1/group
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    allowAccess: true
+    description: Example Variable Group Description
+    name: Example Variable Group
+    projectId: ${azuredevops_project.example.id}
+    variable:
+    - name: key1
+      value: val1
+    - isSecret: true
+      name: key2
+      secretValueSecretRef:
+        key: example-key
+        name: example-secret
+        namespace: upbound-system
+
+---
+
