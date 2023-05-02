@@ -1,0 +1,17 @@
+apiVersion: azuredevops.upbound.io/v1alpha1
+kind: Project
+metadata:
+  annotations:
+    crossplane.io/external-name: "010af4b8-a994-4054-b050-8e3e4b696cc6"
+  name: example-02
+spec:
+  deletionPolicy: Orphan
+  forProvider:
+    name: example-02
+    description: Managed by Terraform descX
+    features:
+      artifacts: disabled
+      testplans: disabled
+    versionControl: Git
+    visibility: private
+    workItemTemplate: Agile

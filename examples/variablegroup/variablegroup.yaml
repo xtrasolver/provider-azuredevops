@@ -1,11 +1,7 @@
 apiVersion: azuredevops.upbound.io/v1alpha1
 kind: VariableGroup
 metadata:
-  annotations:
-    meta.upbound.io/example-id: azuredevops/v1alpha1/variablegroup
     # crossplane.io/external-name: "9"
-  labels:
-    testing.upbound.io/example-name: example
   name: example
 spec:
   deletionPolicy: Orphan
@@ -13,9 +9,8 @@ spec:
     allowAccess: true
     description: Example Variable Group Description
     name: Example Variable Group
-    projectIdSelector:
-      matchLabels:
-        testing.upbound.io/example-name: example
+    projectIdRef:
+      name: example
     variable:
     - name: key1
       value: val1

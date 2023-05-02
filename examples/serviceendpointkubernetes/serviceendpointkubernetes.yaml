@@ -1,0 +1,22 @@
+apiVersion: azuredevops.upbound.io/v1alpha1
+kind: ServiceEndpointKubernetes
+metadata:
+  annotations:
+    crossplane.io/external-name: "b7de9720-c1e6-47f2-a08f-b59a2b7e66e0"
+  name: example-k8s
+spec:
+  deletionPolicy: Orphan
+  forProvider:
+    serviceEndpointName: Example Kubernetes
+    description: Example Kubernetes desc
+    apiserverUrl: https://todo  
+    authorizationType: Kubeconfig
+    kubeconfig:
+    - acceptUntrustedCerts: true
+      clusterContext: default
+      kubeConfigSecretRef:
+        key: kubeconfig
+        name: example-kubeconfig
+        namespace: upbound-system      
+    projectIdRef:
+      name: example

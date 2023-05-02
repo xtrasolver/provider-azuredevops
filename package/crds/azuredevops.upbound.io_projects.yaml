@@ -78,6 +78,9 @@ spec:
                       features. Valid features are boards, repositories, pipelines,
                       testplans, artifacts
                     type: object
+                  name:
+                    description: The Project Name.
+                    type: string
                   versionControl:
                     description: 'Specifies the version control system. Valid values:
                       Git or Tfvc. Defaults to Git.'
@@ -278,6 +281,9 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: name is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)
           status:
             description: ProjectStatus defines the observed state of Project.
             properties:
@@ -295,6 +301,9 @@ spec:
                     type: object
                   id:
                     description: The Project ID of the Project.
+                    type: string
+                  name:
+                    description: The Project Name.
                     type: string
                   processTemplateId:
                     description: The Process Template ID used by the Project.

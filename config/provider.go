@@ -14,6 +14,7 @@ import (
 	"github.com/xtrasolver/provider-azuredevops/config/environment"
 	"github.com/xtrasolver/provider-azuredevops/config/variablegroup"
 	"github.com/xtrasolver/provider-azuredevops/config/project"
+	"github.com/xtrasolver/provider-azuredevops/config/serviceendpointkubernetes"
 )
 
 const (
@@ -41,6 +42,7 @@ func GetProvider() *ujconfig.Provider {
 		environment.Configure,
 		variablegroup.Configure,
 		project.Configure,
+		serviceendpointkubernetes.Configure,
 	} {
 		configure(pc)
 	}

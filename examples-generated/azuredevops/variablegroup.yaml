@@ -37,6 +37,7 @@ metadata:
 spec:
   forProvider:
     description: Managed by Terraform
+    name: Example Project
     versionControl: Git
     visibility: private
     workItemTemplate: Agile

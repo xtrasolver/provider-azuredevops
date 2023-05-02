@@ -2,16 +2,12 @@ apiVersion: azuredevops.upbound.io/v1alpha1
 kind: Environment
 metadata:
   annotations:
-    meta.upbound.io/example-id: azuredevops/v1alpha1/environment
     # crossplane.io/external-name: "15"
-  labels:
-    testing.upbound.io/example-name: example
   name: example
 spec:
   deletionPolicy: Orphan
   forProvider:
     name: Example Environment
     description: Example Environment desc
-    projectIdSelector:
-      matchLabels:
-        testing.upbound.io/example-name: example
+    projectIdRef:
+      name: example

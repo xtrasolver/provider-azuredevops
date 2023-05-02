@@ -12,6 +12,7 @@ spec:
     features:
       artifacts: disabled
       testplans: disabled
+    name: Example Project
     versionControl: Git
     visibility: private
     workItemTemplate: Agile

@@ -25,6 +25,9 @@ type ProjectObservation struct {
 	// The Project ID of the Project.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The Project Name.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
 	// The Process Template ID used by the Project.
 	ProcessTemplateID *string `json:"processTemplateId,omitempty" tf:"process_template_id,omitempty"`
 
@@ -48,6 +51,10 @@ type ProjectParameters struct {
 	// Valid features are boards, repositories, pipelines, testplans, artifacts
 	// +kubebuilder:validation:Optional
 	Features map[string]*string `json:"features,omitempty" tf:"features,omitempty"`
+
+	// The Project Name.
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// Specifies the version control system. Valid values: Git or Tfvc. Defaults to Git.
 	// +kubebuilder:validation:Optional
@@ -86,8 +93,9 @@ type ProjectStatus struct {
 type Project struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ProjectSpec   `json:"spec"`
-	Status            ProjectStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	Spec   ProjectSpec   `json:"spec"`
+	Status ProjectStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

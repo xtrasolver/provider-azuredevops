@@ -1,14 +1,11 @@
 apiVersion: azuredevops.upbound.io/v1alpha1
 kind: Project
 metadata:
-  annotations:
-    meta.upbound.io/example-id: azuredevops/v1alpha1/project
-  labels:
-    testing.upbound.io/example-name: example
-  name: example
+  name: example-03
 spec:
-  deletionPolicy: Orphan
+  deletionPolicy: Delete
   forProvider:
+    name: example-03
     description: Managed by Terraform
     features:
       artifacts: disabled

@@ -11,6 +11,7 @@ import (
 
 	environment "github.com/xtrasolver/provider-azuredevops/internal/controller/azuredevops/environment"
 	project "github.com/xtrasolver/provider-azuredevops/internal/controller/azuredevops/project"
+	serviceendpointkubernetes "github.com/xtrasolver/provider-azuredevops/internal/controller/azuredevops/serviceendpointkubernetes"
 	variablegroup "github.com/xtrasolver/provider-azuredevops/internal/controller/azuredevops/variablegroup"
 	providerconfig "github.com/xtrasolver/provider-azuredevops/internal/controller/providerconfig"
 )
@@ -21,6 +22,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		environment.Setup,
 		project.Setup,
+		serviceendpointkubernetes.Setup,
 		variablegroup.Setup,
 		providerconfig.Setup,
 	} {

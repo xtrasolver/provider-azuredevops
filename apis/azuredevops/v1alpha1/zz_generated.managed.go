@@ -159,6 +159,82 @@ func (mg *Project) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) 
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
+// GetCondition of this ServiceEndpointKubernetes.
+func (mg *ServiceEndpointKubernetes) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetDeletionPolicy of this ServiceEndpointKubernetes.
+func (mg *ServiceEndpointKubernetes) GetDeletionPolicy() xpv1.DeletionPolicy {
+	return mg.Spec.DeletionPolicy
+}
+
+// GetManagementPolicy of this ServiceEndpointKubernetes.
+func (mg *ServiceEndpointKubernetes) GetManagementPolicy() xpv1.ManagementPolicy {
+	return mg.Spec.ManagementPolicy
+}
+
+// GetProviderConfigReference of this ServiceEndpointKubernetes.
+func (mg *ServiceEndpointKubernetes) GetProviderConfigReference() *xpv1.Reference {
+	return mg.Spec.ProviderConfigReference
+}
+
+/*
+GetProviderReference of this ServiceEndpointKubernetes.
+Deprecated: Use GetProviderConfigReference.
+*/
+func (mg *ServiceEndpointKubernetes) GetProviderReference() *xpv1.Reference {
+	return mg.Spec.ProviderReference
+}
+
+// GetPublishConnectionDetailsTo of this ServiceEndpointKubernetes.
+func (mg *ServiceEndpointKubernetes) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+	return mg.Spec.PublishConnectionDetailsTo
+}
+
+// GetWriteConnectionSecretToReference of this ServiceEndpointKubernetes.
+func (mg *ServiceEndpointKubernetes) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this ServiceEndpointKubernetes.
+func (mg *ServiceEndpointKubernetes) SetConditions(c ...xpv1.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetDeletionPolicy of this ServiceEndpointKubernetes.
+func (mg *ServiceEndpointKubernetes) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicy of this ServiceEndpointKubernetes.
+func (mg *ServiceEndpointKubernetes) SetManagementPolicy(r xpv1.ManagementPolicy) {
+	mg.Spec.ManagementPolicy = r
+}
+
+// SetProviderConfigReference of this ServiceEndpointKubernetes.
+func (mg *ServiceEndpointKubernetes) SetProviderConfigReference(r *xpv1.Reference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+/*
+SetProviderReference of this ServiceEndpointKubernetes.
+Deprecated: Use SetProviderConfigReference.
+*/
+func (mg *ServiceEndpointKubernetes) SetProviderReference(r *xpv1.Reference) {
+	mg.Spec.ProviderReference = r
+}
+
+// SetPublishConnectionDetailsTo of this ServiceEndpointKubernetes.
+func (mg *ServiceEndpointKubernetes) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+	mg.Spec.PublishConnectionDetailsTo = r
+}
+
+// SetWriteConnectionSecretToReference of this ServiceEndpointKubernetes.
+func (mg *ServiceEndpointKubernetes) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
 // GetCondition of this VariableGroup.
 func (mg *VariableGroup) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
 	return mg.Status.GetCondition(ct)
