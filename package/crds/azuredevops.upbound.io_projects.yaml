@@ -5,18 +5,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.3
   creationTimestamp: null
-  name: environments.azuredevops.azuredevops.upbound.io
+  name: projects.azuredevops.upbound.io
 spec:
-  group: azuredevops.azuredevops.upbound.io
+  group: azuredevops.upbound.io
   names:
     categories:
     - crossplane
     - managed
     - azuredevops
-    kind: Environment
-    listKind: EnvironmentList
-    plural: environments
-    singular: environment
+    kind: Project
+    listKind: ProjectList
+    plural: projects
+    singular: project
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,8 +35,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Environment is the Schema for the Environments API. Manages an
-          Environment.
+        description: Project is the Schema for the Projects API. Manages a project
+          within Azure DevOps organization.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -51,7 +51,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: EnvironmentSpec defines the desired state of Environment
+            description: ProjectSpec defines the desired state of Project
             properties:
               deletionPolicy:
                 default: Delete
@@ -69,14 +69,27 @@ spec:
               forProvider:
                 properties:
                   description:
-                    description: A description for the Environment.
+                    description: The Description of the Project.
                     type: string
-                  name:
-                    description: The name which should be used for this Environment.
+                  features:
+                    additionalProperties:
+                      type: string
+                    description: Defines the status (enabled, disabled) of the project
+                      features. Valid features are boards, repositories, pipelines,
+                      testplans, artifacts
+                    type: object
+                  versionControl:
+                    description: 'Specifies the version control system. Valid values:
+                      Git or Tfvc. Defaults to Git.'
                     type: string
-                  projectId:
-                    description: The ID of the project. Changing this forces a new
-                      Environment to be created.
+                  visibility:
+                    description: 'Specifies the visibility of the Project. Valid values:
+                      private or public. Defaults to private.'
+                    type: string
+                  workItemTemplate:
+                    description: 'Specifies the work item template. Valid values:
+                      Agile, Basic, CMMI, Scrum or a custom, pre-existing one. Defaults
+                      to Agile. An empty string will use the parent organization default.'
                     type: string
                 type: object
               managementPolicy:
@@ -265,28 +278,39 @@ spec:
             required:
             - forProvider
             type: object
-            x-kubernetes-validations:
-            - message: name is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)
-            - message: projectId is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.projectId)
           status:
-            description: EnvironmentStatus defines the observed state of Environment.
+            description: ProjectStatus defines the observed state of Project.
             properties:
               atProvider:
                 properties:
                   description:
-                    description: A description for the Environment.
+                    description: The Description of the Project.
                     type: string
+                  features:
+                    additionalProperties:
+                      type: string
+                    description: Defines the status (enabled, disabled) of the project
+                      features. Valid features are boards, repositories, pipelines,
+                      testplans, artifacts
+                    type: object
                   id:
-                    description: The ID of the Environment.
+                    description: The Project ID of the Project.
                     type: string
-                  name:
-                    description: The name which should be used for this Environment.
+                  processTemplateId:
+                    description: The Process Template ID used by the Project.
                     type: string
-                  projectId:
-                    description: The ID of the project. Changing this forces a new
-                      Environment to be created.
+                  versionControl:
+                    description: 'Specifies the version control system. Valid values:
+                      Git or Tfvc. Defaults to Git.'
+                    type: string
+                  visibility:
+                    description: 'Specifies the visibility of the Project. Valid values:
+                      private or public. Defaults to private.'
+                    type: string
+                  workItemTemplate:
+                    description: 'Specifies the work item template. Valid values:
+                      Agile, Basic, CMMI, Scrum or a custom, pre-existing one. Defaults
+                      to Agile. An empty string will use the parent organization default.'
                     type: string
                 type: object
               conditions:

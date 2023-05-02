@@ -1,9 +1,9 @@
-apiVersion: azuredevops.azuredevops.upbound.io/v1alpha1
+apiVersion: azuredevops.upbound.io/v1alpha1
 kind: Environment
 metadata:
   annotations:
     meta.upbound.io/example-id: azuredevops/v1alpha1/environment
-    crossplane.io/external-name: "15"
+    # crossplane.io/external-name: "15"
   labels:
     testing.upbound.io/example-name: example
   name: example
@@ -12,4 +12,6 @@ spec:
   forProvider:
     name: Example Environment
     description: Example Environment desc
-    projectId: 489dc5dc-3925-4708-bc5a-2905499d4f02
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

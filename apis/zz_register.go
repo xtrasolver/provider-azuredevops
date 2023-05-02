@@ -13,7 +13,6 @@ import (
 	v1alpha1 "github.com/xtrasolver/provider-azuredevops/apis/azuredevops/v1alpha1"
 	v1alpha1apis "github.com/xtrasolver/provider-azuredevops/apis/v1alpha1"
 	v1beta1 "github.com/xtrasolver/provider-azuredevops/apis/v1beta1"
-	v1alpha1variable "github.com/xtrasolver/provider-azuredevops/apis/variable/v1alpha1"
 )
 
 func init() {
@@ -22,7 +21,6 @@ func init() {
 		v1alpha1.SchemeBuilder.AddToScheme,
 		v1alpha1apis.SchemeBuilder.AddToScheme,
 		v1beta1.SchemeBuilder.AddToScheme,
-		v1alpha1variable.SchemeBuilder.AddToScheme,
 	)
 }
 

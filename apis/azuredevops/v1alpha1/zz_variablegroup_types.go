@@ -13,57 +13,6 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type GroupObservation struct {
-
-	// Boolean that indicate if this variable group is shared by all pipelines of this project.
-	AllowAccess *bool `json:"allowAccess,omitempty" tf:"allow_access,omitempty"`
-
-	// The description of the Variable Group.
-	Description *string `json:"description,omitempty" tf:"description,omitempty"`
-
-	// The ID of the Variable Group returned after creation in Azure DevOps.
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
-
-	// A list of key_vault blocks as documented below.
-	KeyVault []KeyVaultObservation `json:"keyVault,omitempty" tf:"key_vault,omitempty"`
-
-	// The name of the Variable Group.
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
-
-	// The ID of the project.
-	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
-
-	// One or more variable blocks as documented below.
-	Variable []VariableObservation `json:"variable,omitempty" tf:"variable,omitempty"`
-}
-
-type GroupParameters struct {
-
-	// Boolean that indicate if this variable group is shared by all pipelines of this project.
-	// +kubebuilder:validation:Optional
-	AllowAccess *bool `json:"allowAccess,omitempty" tf:"allow_access,omitempty"`
-
-	// The description of the Variable Group.
-	// +kubebuilder:validation:Optional
-	Description *string `json:"description,omitempty" tf:"description,omitempty"`
-
-	// A list of key_vault blocks as documented below.
-	// +kubebuilder:validation:Optional
-	KeyVault []KeyVaultParameters `json:"keyVault,omitempty" tf:"key_vault,omitempty"`
-
-	// The name of the Variable Group.
-	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
-
-	// The ID of the project.
-	// +kubebuilder:validation:Optional
-	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
-
-	// One or more variable blocks as documented below.
-	// +kubebuilder:validation:Optional
-	Variable []VariableParameters `json:"variable,omitempty" tf:"variable,omitempty"`
-}
-
 type KeyVaultObservation struct {
 
 	// The name of the Azure key vault to link secrets from as variables.
@@ -89,6 +38,66 @@ type KeyVaultParameters struct {
 	// The id of the Azure subscription endpoint to access the key vault.
 	// +kubebuilder:validation:Required
 	ServiceEndpointID *string `json:"serviceEndpointId" tf:"service_endpoint_id,omitempty"`
+}
+
+type VariableGroupObservation struct {
+
+	// Boolean that indicate if this variable group is shared by all pipelines of this project.
+	AllowAccess *bool `json:"allowAccess,omitempty" tf:"allow_access,omitempty"`
+
+	// The description of the Variable Group.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// The ID of the Variable Group returned after creation in Azure DevOps.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// A list of key_vault blocks as documented below.
+	KeyVault []KeyVaultObservation `json:"keyVault,omitempty" tf:"key_vault,omitempty"`
+
+	// The name of the Variable Group.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The ID of the project.
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// One or more variable blocks as documented below.
+	Variable []VariableObservation `json:"variable,omitempty" tf:"variable,omitempty"`
+}
+
+type VariableGroupParameters struct {
+
+	// Boolean that indicate if this variable group is shared by all pipelines of this project.
+	// +kubebuilder:validation:Optional
+	AllowAccess *bool `json:"allowAccess,omitempty" tf:"allow_access,omitempty"`
+
+	// The description of the Variable Group.
+	// +kubebuilder:validation:Optional
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// A list of key_vault blocks as documented below.
+	// +kubebuilder:validation:Optional
+	KeyVault []KeyVaultParameters `json:"keyVault,omitempty" tf:"key_vault,omitempty"`
+
+	// The name of the Variable Group.
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The ID of the project.
+	// +crossplane:generate:reference:type=github.com/xtrasolver/provider-azuredevops/apis/azuredevops/v1alpha1.Project
+	// +kubebuilder:validation:Optional
+	ProjectID *string `json:"projectId,omitempty" tf:"project_id,omitempty"`
+
+	// Reference to a Project in azuredevops to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDRef *v1.Reference `json:"projectIdRef,omitempty" tf:"-"`
+
+	// Selector for a Project in azuredevops to populate projectId.
+	// +kubebuilder:validation:Optional
+	ProjectIDSelector *v1.Selector `json:"projectIdSelector,omitempty" tf:"-"`
+
+	// One or more variable blocks as documented below.
+	// +kubebuilder:validation:Optional
+	Variable []VariableParameters `json:"variable,omitempty" tf:"variable,omitempty"`
 }
 
 type VariableObservation struct {
@@ -127,54 +136,53 @@ type VariableParameters struct {
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
-// GroupSpec defines the desired state of Group
-type GroupSpec struct {
+// VariableGroupSpec defines the desired state of VariableGroup
+type VariableGroupSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     GroupParameters `json:"forProvider"`
+	ForProvider     VariableGroupParameters `json:"forProvider"`
 }
 
-// GroupStatus defines the observed state of Group.
-type GroupStatus struct {
+// VariableGroupStatus defines the observed state of VariableGroup.
+type VariableGroupStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        GroupObservation `json:"atProvider,omitempty"`
+	AtProvider        VariableGroupObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// Group is the Schema for the Groups API. Manages variable groups within Azure DevOps project.
+// VariableGroup is the Schema for the VariableGroups API. Manages variable groups within Azure DevOps project.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,azuredevops}
-type Group struct {
+type VariableGroup struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.projectId)",message="projectId is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.variable)",message="variable is a required parameter"
-	Spec   GroupSpec   `json:"spec"`
-	Status GroupStatus `json:"status,omitempty"`
+	Spec   VariableGroupSpec   `json:"spec"`
+	Status VariableGroupStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// GroupList contains a list of Groups
-type GroupList struct {
+// VariableGroupList contains a list of VariableGroups
+type VariableGroupList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []Group `json:"items"`
+	Items           []VariableGroup `json:"items"`
 }
 
 // Repository type metadata.
 var (
-	Group_Kind             = "Group"
-	Group_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: Group_Kind}.String()
-	Group_KindAPIVersion   = Group_Kind + "." + CRDGroupVersion.String()
-	Group_GroupVersionKind = CRDGroupVersion.WithKind(Group_Kind)
+	VariableGroup_Kind             = "VariableGroup"
+	VariableGroup_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: VariableGroup_Kind}.String()
+	VariableGroup_KindAPIVersion   = VariableGroup_Kind + "." + CRDGroupVersion.String()
+	VariableGroup_GroupVersionKind = CRDGroupVersion.WithKind(VariableGroup_Kind)
 )
 
 func init() {
-	SchemeBuilder.Register(&Group{}, &GroupList{})
+	SchemeBuilder.Register(&VariableGroup{}, &VariableGroupList{})
 }

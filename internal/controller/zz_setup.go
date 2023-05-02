@@ -10,8 +10,9 @@ import (
 	"github.com/upbound/upjet/pkg/controller"
 
 	environment "github.com/xtrasolver/provider-azuredevops/internal/controller/azuredevops/environment"
+	project "github.com/xtrasolver/provider-azuredevops/internal/controller/azuredevops/project"
+	variablegroup "github.com/xtrasolver/provider-azuredevops/internal/controller/azuredevops/variablegroup"
 	providerconfig "github.com/xtrasolver/provider-azuredevops/internal/controller/providerconfig"
-	group "github.com/xtrasolver/provider-azuredevops/internal/controller/variable/group"
 )
 
 // Setup creates all controllers with the supplied logger and adds them to
@@ -19,8 +20,9 @@ import (
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		environment.Setup,
+		project.Setup,
+		variablegroup.Setup,
 		providerconfig.Setup,
-		group.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
 			return err

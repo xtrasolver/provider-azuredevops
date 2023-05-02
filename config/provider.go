@@ -13,6 +13,7 @@ import (
 	// "github.com/xtrasolver/provider-azuredevops/config/null"
 	"github.com/xtrasolver/provider-azuredevops/config/environment"
 	"github.com/xtrasolver/provider-azuredevops/config/variablegroup"
+	"github.com/xtrasolver/provider-azuredevops/config/project"
 )
 
 const (
@@ -39,6 +40,7 @@ func GetProvider() *ujconfig.Provider {
 		// add custom config functions
 		environment.Configure,
 		variablegroup.Configure,
+		project.Configure,
 	} {
 		configure(pc)
 	}

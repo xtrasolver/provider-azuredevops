@@ -3,12 +3,10 @@ kind: VariableGroup
 metadata:
   annotations:
     meta.upbound.io/example-id: azuredevops/v1alpha1/variablegroup
-    # crossplane.io/external-name: "9"
   labels:
     testing.upbound.io/example-name: example
   name: example
 spec:
-  deletionPolicy: Orphan
   forProvider:
     allowAccess: true
     description: Example Variable Group Description
@@ -25,3 +23,23 @@ spec:
         key: example-key
         name: example-secret
         namespace: upbound-system
+
+---
+
+apiVersion: azuredevops.upbound.io/v1alpha1
+kind: Project
+metadata:
+  annotations:
+    meta.upbound.io/example-id: /v1alpha1/variablegroup
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    description: Managed by Terraform
+    versionControl: Git
+    visibility: private
+    workItemTemplate: Agile
+
+---
+

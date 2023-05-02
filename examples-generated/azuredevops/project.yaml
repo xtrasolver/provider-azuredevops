@@ -1,0 +1,20 @@
+apiVersion: azuredevops.upbound.io/v1alpha1
+kind: Project
+metadata:
+  annotations:
+    meta.upbound.io/example-id: azuredevops/v1alpha1/project
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    description: Managed by Terraform
+    features:
+      artifacts: disabled
+      testplans: disabled
+    versionControl: Git
+    visibility: private
+    workItemTemplate: Agile
+
+---
+

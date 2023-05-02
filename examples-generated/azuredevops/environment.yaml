@@ -1,4 +1,4 @@
-apiVersion: azuredevops.azuredevops.upbound.io/v1alpha1
+apiVersion: azuredevops.upbound.io/v1alpha1
 kind: Environment
 metadata:
   annotations:
@@ -9,7 +9,26 @@ metadata:
 spec:
   forProvider:
     name: Example Environment
-    projectId: ${azuredevops_project.example.id}
+    projectIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: azuredevops.upbound.io/v1alpha1
+kind: Project
+metadata:
+  annotations:
+    meta.upbound.io/example-id: /v1alpha1/environment
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    description: Managed by Terraform
+    versionControl: Git
+    visibility: private
+    workItemTemplate: Agile
 
 ---
 

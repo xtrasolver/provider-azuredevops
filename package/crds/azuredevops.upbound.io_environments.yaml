@@ -5,18 +5,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.3
   creationTimestamp: null
-  name: groups.variable.azuredevops.upbound.io
+  name: environments.azuredevops.upbound.io
 spec:
-  group: variable.azuredevops.upbound.io
+  group: azuredevops.upbound.io
   names:
     categories:
     - crossplane
     - managed
     - azuredevops
-    kind: Group
-    listKind: GroupList
-    plural: groups
-    singular: group
+    kind: Environment
+    listKind: EnvironmentList
+    plural: environments
+    singular: environment
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,8 +35,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Group is the Schema for the Groups API. Manages variable groups
-          within Azure DevOps project.
+        description: Environment is the Schema for the Environments API. Manages an
+          Environment.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -51,7 +51,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: GroupSpec defines the desired state of Group
+            description: EnvironmentSpec defines the desired state of Environment
             properties:
               deletionPolicy:
                 default: Delete
@@ -68,79 +68,91 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  allowAccess:
-                    description: Boolean that indicate if this variable group is shared
-                      by all pipelines of this project.
-                    type: boolean
                   description:
-                    description: The description of the Variable Group.
+                    description: A description for the Environment.
                     type: string
-                  keyVault:
-                    description: A list of key_vault blocks as documented below.
-                    items:
-                      properties:
-                        name:
-                          description: The name of the Azure key vault to link secrets
-                            from as variables.
-                          type: string
-                        searchDepth:
-                          description: Set the Azure Key Vault Secret search depth.
-                            Defaults to 20.
-                          type: number
-                        serviceEndpointId:
-                          description: The id of the Azure subscription endpoint to
-                            access the key vault.
-                          type: string
-                      required:
-                      - name
-                      - serviceEndpointId
-                      type: object
-                    type: array
                   name:
-                    description: The name of the Variable Group.
+                    description: The name which should be used for this Environment.
                     type: string
                   projectId:
-                    description: The ID of the project.
+                    description: The ID of the project. Changing this forces a new
+                      Environment to be created.
                     type: string
-                  variable:
-                    description: One or more variable blocks as documented below.
-                    items:
-                      properties:
-                        isSecret:
-                          description: A boolean flag describing if the variable value
-                            is sensitive. Defaults to false.
-                          type: boolean
-                        name:
-                          description: The key value used for the variable. Must be
-                            unique within the Variable Group.
+                  projectIdRef:
+                    description: Reference to a Project in azuredevops to populate
+                      projectId.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  projectIdSelector:
+                    description: Selector for a Project in azuredevops to populate
+                      projectId.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
                           type: string
-                        secretValueSecretRef:
-                          description: The secret value of the variable. If omitted,
-                            it will default to empty string. Used when is_secret set
-                            to true.
-                          properties:
-                            key:
-                              description: The key to select.
-                              type: string
-                            name:
-                              description: Name of the secret.
-                              type: string
-                            namespace:
-                              description: Namespace of the secret.
-                              type: string
-                          required:
-                          - key
-                          - name
-                          - namespace
-                          type: object
-                        value:
-                          description: The value of the variable. If omitted, it will
-                            default to empty string.
-                          type: string
-                      required:
-                      - name
-                      type: object
-                    type: array
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
                 type: object
               managementPolicy:
                 default: FullControl
@@ -331,74 +343,24 @@ spec:
             x-kubernetes-validations:
             - message: name is a required parameter
               rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)
-            - message: projectId is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.projectId)
-            - message: variable is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.variable)
           status:
-            description: GroupStatus defines the observed state of Group.
+            description: EnvironmentStatus defines the observed state of Environment.
             properties:
               atProvider:
                 properties:
-                  allowAccess:
-                    description: Boolean that indicate if this variable group is shared
-                      by all pipelines of this project.
-                    type: boolean
                   description:
-                    description: The description of the Variable Group.
+                    description: A description for the Environment.
                     type: string
                   id:
-                    description: The ID of the Variable Group returned after creation
-                      in Azure DevOps.
+                    description: The ID of the Environment.
                     type: string
-                  keyVault:
-                    description: A list of key_vault blocks as documented below.
-                    items:
-                      properties:
-                        name:
-                          description: The name of the Azure key vault to link secrets
-                            from as variables.
-                          type: string
-                        searchDepth:
-                          description: Set the Azure Key Vault Secret search depth.
-                            Defaults to 20.
-                          type: number
-                        serviceEndpointId:
-                          description: The id of the Azure subscription endpoint to
-                            access the key vault.
-                          type: string
-                      type: object
-                    type: array
                   name:
-                    description: The name of the Variable Group.
+                    description: The name which should be used for this Environment.
                     type: string
                   projectId:
-                    description: The ID of the project.
+                    description: The ID of the project. Changing this forces a new
+                      Environment to be created.
                     type: string
-                  variable:
-                    description: One or more variable blocks as documented below.
-                    items:
-                      properties:
-                        contentType:
-                          type: string
-                        enabled:
-                          type: boolean
-                        expires:
-                          type: string
-                        isSecret:
-                          description: A boolean flag describing if the variable value
-                            is sensitive. Defaults to false.
-                          type: boolean
-                        name:
-                          description: The key value used for the variable. Must be
-                            unique within the Variable Group.
-                          type: string
-                        value:
-                          description: The value of the variable. If omitted, it will
-                            default to empty string.
-                          type: string
-                      type: object
-                    type: array
                 type: object
               conditions:
                 description: Conditions of the resource.
