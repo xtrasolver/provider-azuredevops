@@ -8,9 +8,9 @@ AzureDevOps API.
 ## Getting Started
 
 Install the provider by using the following command after changing the image tag
-to the [latest release](https://marketplace.upbound.io/providers/xtramole/provider-azuredevops):
+to the [latest release](https://marketplace.upbound.io/providers/xtrasolver/provider-azuredevops):
 ```
-up ctp provider install xtramole/provider-azuredevops:v0.1.0
+up ctp provider install xtrasolver/provider-azuredevops:v0.1.0
 ```
 
 Alternatively, you can use declarative installation:
@@ -21,13 +21,13 @@ kind: Provider
 metadata:
   name: provider-azuredevops
 spec:
-  package: xtramole/provider-azuredevops:v0.1.0
+  package: xtrasolver/provider-azuredevops:v0.1.0
 EOF
 ```
 
 Notice that in this example Provider resource is referencing ControllerConfig with debug enabled.
 
-You can see the API reference [here](https://doc.crds.dev/github.com/xtramole/provider-azuredevops).
+You can see the API reference [here](https://doc.crds.dev/github.com/xtrasolver/provider-azuredevops).
 
 ## Developing
 
@@ -57,4 +57,4 @@ make build
 ## Report a Bug
 
 For filing bugs, suggesting improvements, or requesting new features, please
-open an [issue](https://github.com/xtramole/provider-azuredevops/issues).
+open an [issue](https://github.com/xtrasolver/provider-azuredevops/issues).

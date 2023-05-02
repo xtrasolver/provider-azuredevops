@@ -11,7 +11,7 @@ import (
 
 	"github.com/upbound/upjet/pkg/pipeline"
 
-	"github.com/xtramole/provider-azuredevops/config"
+	"github.com/xtrasolver/provider-azuredevops/config"
 )
 
 func main() {

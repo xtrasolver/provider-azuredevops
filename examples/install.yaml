@@ -3,4 +3,4 @@ kind: Provider
 metadata:
   name: provider-azuredevops
 spec:
-  package: xtramole/provider-azuredevops:v0.1.0
+  package: xtrasolver/provider-azuredevops:v0.1.0

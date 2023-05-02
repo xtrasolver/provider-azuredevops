@@ -24,12 +24,12 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	"github.com/xtramole/provider-azuredevops/apis"
-	"github.com/xtramole/provider-azuredevops/apis/v1alpha1"
-	"github.com/xtramole/provider-azuredevops/config"
-	"github.com/xtramole/provider-azuredevops/internal/clients"
-	"github.com/xtramole/provider-azuredevops/internal/controller"
-	"github.com/xtramole/provider-azuredevops/internal/features"
+	"github.com/xtrasolver/provider-azuredevops/apis"
+	"github.com/xtrasolver/provider-azuredevops/apis/v1alpha1"
+	"github.com/xtrasolver/provider-azuredevops/config"
+	"github.com/xtrasolver/provider-azuredevops/internal/clients"
+	"github.com/xtrasolver/provider-azuredevops/internal/controller"
+	"github.com/xtrasolver/provider-azuredevops/internal/features"
 )
 
 func main() {
