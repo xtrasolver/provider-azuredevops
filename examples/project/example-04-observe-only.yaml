@@ -2,17 +2,10 @@ apiVersion: azuredevops.upbound.io/v1alpha1
 kind: Project
 metadata:
   annotations:
-    crossplane.io/external-name: "example-04"
+    crossplane.io/external-name: "dd4035ee-f468-4a86-8284-692a5d103bf1"
   name: example-04-observe-only
 spec:
   deletionPolicy: Delete
-  managementPolicy: FullControl
+  managementPolicy: ObserveOnly
   forProvider:
     name: example-04
-    description: Managed by Terraform
-    features:
-      artifacts: disabled
-      testplans: disabled
-    versionControl: Git
-    visibility: private
-    workItemTemplate: Scrum

@@ -1,0 +1,12 @@
+apiVersion: azuredevops.upbound.io/v1alpha1
+kind: Environment
+metadata:
+  name: example-04-depends-on-observed
+spec:
+  deletionPolicy: Delete
+  managementPolicy: FullControl
+  forProvider:
+    name: example-04-depends-on-observed
+    description: Example Environment desc
+    projectIdRef:
+      name: example-04-observe-only
