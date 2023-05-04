@@ -1,0 +1,14 @@
+apiVersion: azuredevops.upbound.io/v1alpha1
+kind: Environment
+metadata:
+  annotations:
+    crossplane.io/external-name: "example-01/21"
+  name: example-01a
+spec:
+  managementPolicy: ObserveOnly #FullControl
+  forProvider:
+    name: example-01a
+    description: "Example Environment with managementPolicy: ObserveOnly"
+    projectIdRef:
+      name: example-01
+  

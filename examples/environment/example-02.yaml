@@ -1,0 +1,14 @@
+apiVersion: azuredevops.upbound.io/v1alpha1
+kind: Environment
+metadata:
+  annotations:
+    crossplane.io/external-name: "18"
+  name: example-02
+spec:
+  deletionPolicy: Orphan
+  managementPolicy: FullControl
+  forProvider:
+    name: example-02
+    description: Example Environment desc
+    projectIdRef:
+      name: example-02

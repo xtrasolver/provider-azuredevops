@@ -6,6 +6,7 @@ metadata:
   name: example-k8s
 spec:
   deletionPolicy: Orphan
+  managementPolicy: FullControl
   forProvider:
     serviceEndpointName: Example Kubernetes
     description: Example Kubernetes desc
@@ -19,4 +20,4 @@ spec:
         name: example-kubeconfig
         namespace: upbound-system      
     projectIdRef:
-      name: example
+      name: example-01

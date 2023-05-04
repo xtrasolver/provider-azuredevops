@@ -1,16 +1,18 @@
 apiVersion: azuredevops.upbound.io/v1alpha1
 kind: VariableGroup
 metadata:
-    # crossplane.io/external-name: "9"
-  name: example
+  annotations:
+    crossplane.io/external-name: "10"
+  name: example-01
 spec:
   deletionPolicy: Orphan
+  managementPolicy: FullControl
   forProvider:
     allowAccess: true
     description: Example Variable Group Description
     name: Example Variable Group
     projectIdRef:
-      name: example
+      name: example-01
     variable:
     - name: key1
       value: val1

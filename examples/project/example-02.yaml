@@ -6,6 +6,7 @@ metadata:
   name: example-02
 spec:
   deletionPolicy: Orphan
+  managementPolicy: FullControl
   forProvider:
     name: example-02
     description: Managed by Terraform descX
