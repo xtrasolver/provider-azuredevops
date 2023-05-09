@@ -51,27 +51,74 @@ spec:
       apiVersion: kubernetes.crossplane.io/v1alpha1
       kind: Object
       metadata:
-        name: krtek
+        name: demo
       spec:
         providerConfigRef:
-          name: beta 
-        references:
-        - patchesFrom:
+          name: beta   
+        forProvider:
+          manifest:
             apiVersion: v1
             kind: Secret
-            name: tfs-token
-            namespace: ocplab-dev
-            fieldPath: data
-          toFieldPath: data
+            metadata:
+              name: demo
+              namespace: ocplab-dev
+    patches:
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.forProvider.manifest.stringData.demo
+        transforms:
+        - type: string
+          string:
+            fmt: |
+              demo
+              %s
+  - name: secret-observer
+    base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      metadata:
+        name: observed
+      spec:
+        managementPolicy: Observe
+        providerConfigRef:
+          name: beta   
         forProvider:
           manifest:
             apiVersion: v1
             kind: Secret
             metadata:
               name: tfs-token
+              namespace: ocplab-dev
+        writeConnectionSecretToRef:
+          namespace: data
+          name: ocplab-dev-token-replica
+    patches:
+      - fromFieldPath: status.atProvider.manifest.data.token
+        toFieldPath: spec.writeConnectionSecretToRef.data.token
+  - name: secret-from
+    base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      metadata:
+        name: demo2
+      spec:
+        providerConfigRef:
+          name: cluster-mock   
+        forProvider:
+          manifest:
+            apiVersion: v1
+            kind: Secret
+            metadata:
+              name: demo
               namespace: data
-          providerConfigRef:
-            name: cluster-mock     
+    patches:
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.forProvider.manifest.stringData.demo
+        transforms:
+        - type: string
+          string:
+            fmt: |
+              demo
+              %s
   # - name: serviceAccountSecret
   #   base: 
   #     apiVersion: v1
