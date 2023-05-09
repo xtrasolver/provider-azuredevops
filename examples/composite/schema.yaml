@@ -1,0 +1,32 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: provisionedenvironments.devops.example.com
+spec:
+  group: devops.example.com
+  names:
+    kind: ProvisionedEnvironment
+    plural: provisionedenvironments
+  claimNames:
+    kind: ProvisionedEnvironment
+    plural: provisioneenvironments
+  versions:
+  - name: v1alpha1
+    served: true
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              project:
+                type: object
+                properties:
+                  name:
+                    type: string
+                required:
+                - name
+            required:
+            - project

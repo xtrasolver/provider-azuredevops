@@ -1,0 +1,110 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: example-composition
+  labels:
+    crossplane.io/xrd: provisionedenvironments.devops.example.com
+spec:
+  writeConnectionSecretsToNamespace: default
+  compositeTypeRef:
+    apiVersion: devops.example.com/v1alpha1
+    kind: ProvisionedEnvironment
+  resources:
+  - name: projectInstance
+    base:
+      apiVersion: azuredevops.upbound.io/v1alpha1
+      kind: Project
+      spec:
+        deletionPolicy: Delete
+        managementPolicy: ObserveOnly
+    patches:
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.project.name
+      toFieldPath: metadata.annotations[crossplane.io/external-name]
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.project.name
+      toFieldPath: spec.forProvider.name
+    - type: ToCompositeFieldPath
+      fromFieldPath: status.atProvider.id
+      toFieldPath: metadata.annotations[devops.example.com/project-id]
+    - type: ToCompositeFieldPath
+      fromFieldPath: status.atProvider.id
+      toFieldPath: status.projectId      
+  - name: environmentInstance
+    base:
+      apiVersion: azuredevops.upbound.io/v1alpha1
+      kind: Environment
+      spec:
+        deletionPolicy: Delete
+        managementPolicy: FullControl
+        forProvider:
+          description: Example Environment desc
+    patches:
+    - type: FromCompositeFieldPath
+      fromFieldPath: metadata.annotations[devops.example.com/project-id]
+      toFieldPath: spec.forProvider.projectId
+    - type: FromCompositeFieldPath
+      fromFieldPath: metadata.name
+      toFieldPath: spec.forProvider.name
+  - name: secret
+    base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      metadata:
+        name: krtek
+      spec:
+        providerConfigRef:
+          name: beta 
+        references:
+        - patchesFrom:
+            apiVersion: v1
+            kind: Secret
+            name: tfs-token
+            namespace: ocplab-dev
+            fieldPath: data
+          toFieldPath: data
+        forProvider:
+          manifest:
+            apiVersion: v1
+            kind: Secret
+            metadata:
+              name: tfs-token
+              namespace: data
+          providerConfigRef:
+            name: cluster-mock     
+  # - name: serviceAccountSecret
+  #   base: 
+  #     apiVersion: v1
+  #     kind: Secret
+  #     metadata:
+  #       name: example-kubeconfig
+  #       namespace: data
+  #     type: Opaque
+  #     stringData:
+  #       kubeconfig: |
+  #         apiVersion: v1
+  #         clusters:
+  #           - cluster:
+  #               insecure-skip-tls-verify: true                              
+  #               server: https://127.0.0.1:32774
+  #             name: target
+  #         contexts:
+  #           - context:
+  #               cluster: target
+  #               namespace: cluster-mock
+  #               user: admin
+  #             name: default
+  #         current-context: default
+  #         kind: Config
+  #         preferences: {}
+  #         users:
+  #           - name: admin
+  #             user:
+  #               token: todo
+  #   patches:
+  #   - type: FromCompositeFieldPath
+  #     fromFieldPath: metadata.annotations[devops.example.com/project-id]
+  #     toFieldPath: spec.forProvider.projectId
+  #   - type: FromCompositeFieldPath
+  #     fromFieldPath: metadata.name
+  #     toFieldPath: spec.forProvider.name

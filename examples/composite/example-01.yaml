@@ -1,0 +1,9 @@
+apiVersion: devops.example.com/v1alpha1
+kind: ProvisionedEnvironment
+metadata:
+  name: example-04-demo
+spec:
+  project:
+    name: example-04
+  compositionRef:
+    name: example-composition
